@@ -2,9 +2,20 @@ import parselmouth
 import glob
 import os.path
 
-for file in glob.glob("english1.mp3"):
-    s = parselmouth.Sound(file)
+values = []
 
-mfcc = s.to_mfcc()
-features = mfcc.extract_features()
-print features.as_array()
+for fp in glob.iglob("male/*.mp3"):
+    for file in glob.glob(fp):
+        s = parselmouth.Sound(file)
+
+    mfcc = s.to_mfcc()
+    features = mfcc.extract_features()
+    values.append(features.as_array())
+
+for fp in glob.iglob("female/*.mp3"):
+    for file in glob.glob(fp):
+        s = parselmouth.Sound(file)
+
+    mfcc = s.to_mfcc()
+    features = mfcc.extract_features()
+    values.append(features.as_array())

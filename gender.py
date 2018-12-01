@@ -7,8 +7,8 @@ import os.path
 male_data = {}
 female_data = {}
 
-def extract_pitch(filepath, db):
-    for filepath in glob.iglob("male/*.mp3"):
+def extract_pitch(fp, db):
+    for filepath in glob.iglob(fp):
         for file in glob.glob(filepath):
             s = parselmouth.Sound(file)
 
