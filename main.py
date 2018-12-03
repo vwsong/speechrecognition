@@ -71,7 +71,8 @@ for i in range(0, iterations):
     targets = []
     counter = 0
 
-    for wav in glob.iglob("wav/*/wav/*.wav"):
+    for wav in glob.iglob("wav_smaller/*/wav/*.wav"):
+        print str(counter) + " is done"
         (rate,audio) = wavfile.read(wav)
         features = mfcc.mfcc(audio, rate, 0.025, 0.01, 20, appendEnergy = True)
         values = np.concatenate((values, features), axis=0)
