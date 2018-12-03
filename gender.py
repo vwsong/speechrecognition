@@ -1,6 +1,7 @@
 import parselmouth
 import glob
 import math
+import numpy as np
 import os.path
 
 # filename -> pitch values
@@ -16,18 +17,31 @@ def extract_pitch(fp, db):
         duration = pitch.get_total_duration()
 
         values = []
-        frames = 4000
+        frames = 400
         for i in range(1, frames):
             frame = i/float(frames)
             value = pitch.get_value_at_time(frame * duration)
             if not math.isnan(value):
                 values.append(value)
 
-        print len(values)
         db[filepath] = values
 
 extract_pitch("female/*.mp3", female_data)
 extract_pitch("male/*.mp3", male_data)
 
-print male_data
-print female_data
+male_values = []
+female_values = []
+
+for key in male_data.keys():
+    value = male_data[key]
+    male_values += value
+
+for key in female_data.keys():
+    value = female_data[key]
+    female_values += value
+
+print np.average(male_values)
+print np.std(male_values)
+
+print np.average(female_values)
+print np.std(female_values)
