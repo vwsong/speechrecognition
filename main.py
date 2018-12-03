@@ -130,8 +130,11 @@ for i in range(0, iterations):
     n_classes = len(np.unique(y_train))
 
     gmm = mixture.GaussianMixture(n_components = n_classes, max_iter = 200)
+    print 'Training...'
     trained = gmm.fit(X_train)
+    print 'predicting...'
     labels = trained.predict(X_test)
+    print 'done predicting!'
 
     percent = 0;
     for j in range(0, (len(labels))):
