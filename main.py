@@ -9,6 +9,8 @@ import itertools
 import matplotlib.pyplot as plt
 import matplotlib as mpl
 from scipy import linalg
+import python_speech_features as mfcc
+import scipy.io.wavfile as wavfile
 
 # make sure to pip install nose tornado and scikit-learn
 
@@ -65,33 +67,41 @@ def plot_results(X, Y_, means, covariances, index, title):
 iterations = 1
 
 for i in range(0, iterations):
-    values = [[0 for i in range(0, 4)] for j in range(0, 1)]
+    values = [[0 for i in range(0, 20)] for j in range(0, 1)]
     targets = []
     counter = 0
 
-    for fp in glob.iglob("male/*.mp3"):
-        for file in glob.glob(fp):
-            s = parselmouth.Sound(file)
-
-        mfcc = s.to_mfcc()
-        features = mfcc.extract_features()
-        values = np.concatenate((values,np.transpose(features.as_array())), axis=0)
+    for wav in glob.iglob("wav/*/wav/*.wav"):
+        (rate,audio) = wavfile.read(wav)
+        features = mfcc.mfcc(audio, rate, 0.025, 0.01, 20, appendEnergy = True)
+        values = np.concatenate((values, features), axis=0)
         target = [counter for i in range(0, len(features))]
         targets.append(target)
         counter += 1
-        #[[0 for i in range(0, 4)] for j in range(0, 1)]
-        #print str(len(np.transpose(features.as_array()))) + " male"
 
-    for fp in glob.iglob("female/*.mp3"):
-        for file in glob.glob(fp):
-            s = parselmouth.Sound(file)
-
-        mfcc = s.to_mfcc()
-        features = mfcc.extract_features()
-        values = np.concatenate((values,np.transpose(features.as_array())), axis=0)
-        target = [counter for i in range(0, len(features))]
-        targets.append(target)
-        counter += 1
+    # for fp in glob.iglob("male/*.mp3"):
+    #     for file in glob.glob(fp):
+    #         s = parselmouth.Sound(file)
+    #
+    #     mfcc = s.to_mfcc()
+    #     features = mfcc.extract_features()
+    #     values = np.concatenate((values,np.transpose(features.as_array())), axis=0)
+    #     target = [counter for i in range(0, len(features))]
+    #     targets.append(target)
+    #     counter += 1
+    #     #[[0 for i in range(0, 4)] for j in range(0, 1)]
+    #     #print str(len(np.transpose(features.as_array()))) + " male"
+    #
+    # for fp in glob.iglob("female/*.mp3"):
+    #     for file in glob.glob(fp):
+    #         s = parselmouth.Sound(file)
+    #
+    #     mfcc = s.to_mfcc()
+    #     features = mfcc.extract_features()
+    #     values = np.concatenate((values,np.transpose(features.as_array())), axis=0)
+    #     target = [counter for i in range(0, len(features))]
+    #     targets.append(target)
+    #     counter += 1
         #print str(len(np.transpose(features.as_array()))) + " female"
 
     ## delete later
