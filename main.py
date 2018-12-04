@@ -120,12 +120,19 @@ for i in range(0, iterations):
                 scores = np.array(gmm.score(values))
                 log_likelihood[i] = scores.sum()
             likely = np.argmax(log_likelihood)
-            expecte d = np.append(expected, person)
+            expected = np.append(expected, person)
             real = np.append(real, likely)
             values = np.asarray(())
             person += 1
     print str(expected) + "expected"
     print str(real) + "real"
+    percent = 0;
+    for j in range(0, (len(real))):
+        if real[j] == expected[j]:
+            percent += 1
+    percent = float(percent) / (len(real))
+    print percent
+
 
 
 
